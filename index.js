@@ -1,63 +1,71 @@
 const express = require('express');
 
 const service = express();
+service.use(express.json());
+const fs = require('fs');
 
+const json = fs.readFileSync('credentials.json', 'utf8');
+const credentials = JSON.parse(json);
 var tickers = {
 };
-service.use(express.json());
 
+const connection = mysql.createConnection(credentials);
+connection.connect(error => {
+  if (error) {
+    console.error(error);
+    process.exit(1);
+  }
+});
+
+// TODO: issue queries.
 
 service.post('/:ticker/:id', (request, response) => {
-var ticker = request.params.ticker.toLowerCase();
-var id = parseInt(request.params.id.toLowerCase());
-var holder_ticker = {ticker: ticker, id: id, likes:0, dislikes:0};
-Object.assign(holder_ticker, request.body);
-if (tickers.hasOwnProperty(ticker)){
-    tickers[ticker].analyses.push(holder_ticker);
-} else{
-    var new_ticker = {
-        ticker: ticker,
-        analyses: [
-            {
-
-            }
-        ]
-    }
-    tickers[ticker] = new_ticker;
-    tickers[ticker].analyses.push(holder_ticker);
+if (request.body.hasOwnPropert('id') && request.body.hasOwnPropert('ticker') &&
+request.body.hasOwnPropert('likes') && request.body.hasOwnPropert('dislikes') &&
+request.body.hasOwnPropert('price_target') && request.body.hasOwnPropert('analysis'){
+const parameters = [
+    request.body.id,
+    request.body.ticker,
+    request.body.likes,
+    request.body.dislikes,
+    request.body.price_target,
+    request.body.analysis
+]
+const query = 'INSERT INTO tickers(id, ticker, likes, dislikes, price_target, analysis) VALUES (?, ?, ?, ?, ?, ?)'
+connection.query(query, parameters, (error, result) => {
+if(error){
+    response.status(500);
+    response.json({
+        ok: false,
+        results: error.message,
+    });
+}else{
+    response.json({
+        ok: true,
+        results: result.insertId,
+    });
 }
-
-response.json({
-    ok:true,
-    result: {
-        ticker: ticker,
-        id: id,
-        likes: 0,
-        dislikes: 0,
-        price_target: 0,
-        //analysis: tickers[ticker].analyses[id].analysis,
-    },
 });
+}
 });
 
 service.get('/:ticker', (request, response) => {
     var ticker = request.params.ticker;
-    
-        if (tickers.hasOwnProperty(ticker)){
-    response.json({
-    ok: true,
-    result: {
-     ticker: ticker,
-     analyses: tickers[ticker].analyses,
-    }
-    });
-}else{
-    response.status(404);
-    response.json({
-      ok: false,
-      results: `No such ticker: ${ticker}`,
-    });
-}
+    const query = 'SELECT * FROM tickers WHERE ticker = ?'
+    connection.query(query, parameters, (error, rows) => {
+        if (error){
+            response.status(500);
+            response.json({
+                ok: false,
+                results: error.message,
+            });
+        }else{
+            const tickers = row.map(rowToMemory);
+            response.json({
+                ok: true,
+                results: rows.map(rowToMemory),
+            })
+        }      
 });
 
 service.get('/:ticker/:id', (request, response) => {
@@ -105,7 +113,7 @@ service.patch('/:ticker/:id/like', (request, response) => {
 service.patch('/:ticker/:id', (request,response) => {
     var ticker = request.params.ticker;
     var id = parseInt(request.params.id);
-    var holder_ticker = {};
+    var holder_ticker = {ticker: ticker, id: id};
     console.log(request.body);
     Object.assign(holder_ticker, request.body);
     if (tickers.hasOwnProperty(ticker)){
