@@ -2,6 +2,10 @@ const express = require('express');
 const mysql = require('mysql');
 const service = express();
 service.use(express.json());
+service.use((request, response, next) => {
+  response.set('Access-Control-Allow-Origin', '*');
+  next();
+});
 const fs = require('fs');
 
 const json = fs.readFileSync('credentials.json', 'utf8');
@@ -17,6 +21,12 @@ connection.connect(error => {
   }
 });
 
+service.options('*', (request, response) => {
+  response.set('Access-Control-Allow-Headers', 'Content-Type');
+  response.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
+  response.sendStatus(200);
+});
+
 service.post('/:ticker/:id', (request, response) => {
 if (request.body.hasOwnProperty('id') && request.body.hasOwnProperty('ticker') &&
 request.body.hasOwnProperty('likes') && request.body.hasOwnProperty('dislikes') &&
@@ -24,9 +34,9 @@ request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('anal
 const parameters = [
     parseInt(request.body.id),
     request.body.ticker,
-    request.body.likes,
-    request.body.dislikes,
-    request.body.price_target,
+    parseInt(request.body.likes),
+    parseInt(request.body.dislikes),
+    parseInt(request.body.price_target),
     request.body.analysis
 ];
 
@@ -108,16 +118,15 @@ request.body.hasOwnProperty('likes') && request.body.hasOwnProperty('dislikes') 
 request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('analysis')){
     
     const parameters = [
-        request.body.likes,
-        request.body.dislikes,
-        request.body.price_target,
+       parseInt(request.body.likes),
+        parseInt(request.body.dislikes),
+        parseInt(request.body.price_target),
         request.body.analysis,
         parseInt(request.body.id),
         request.body.ticker,
     ];
     
-    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, analysis = ?, WHERE id = ? AND ticker = ?';
-    
+    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, analysis = ?  WHERE id = ? AND ticker = ?';
     connection.query(query, parameters, (error, result) => {
         if (error){
             response.status(500);
@@ -146,9 +155,9 @@ request.body.hasOwnProperty('likes') && request.body.hasOwnProperty('dislikes') 
 request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('analysis')){
     
     const parameters = [
-        request.body.likes + 1,
-        request.body.dislikes,
-        request.body.price_target,
+       parseInt(request.body.likes) + 1,
+        parseInt(request.body.dislikes),
+        parseInt(request.body.price_target),
         request.body.analysis,
         parseInt(request.body.id),
         request.body.ticker,
@@ -184,9 +193,9 @@ request.body.hasOwnProperty('likes') && request.body.hasOwnProperty('dislikes') 
 request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('analysis')){
     
     const parameters = [
-        request.body.likes,
-        request.body.dislikes + 1,
-        request.body.price_target,
+        parseInt(request.body.likes),
+        parseInt(request.body.dislikes) + 1,
+        parseInt(request.body.price_target),
         request.body.analysis,
         parseInt(request.body.id),
         request.body.ticker,
