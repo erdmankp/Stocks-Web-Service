@@ -7,6 +7,7 @@ likes INT,
 dislikes INT,
 price_target INT,
 analysis TEXT,
+is_deleted INT DEFAULT 0,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
