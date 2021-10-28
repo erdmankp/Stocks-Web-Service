@@ -22,7 +22,7 @@ connection.connect(error => {
 service.post('/:ticker/:id', (request, response) => {
 if (request.body.hasOwnPropert('id') && request.body.hasOwnPropert('ticker') &&
 request.body.hasOwnPropert('likes') && request.body.hasOwnPropert('dislikes') &&
-request.body.hasOwnPropert('price_target') && request.body.hasOwnPropert('analysis'){
+request.body.hasOwnPropert('price_target') && request.body.hasOwnPropert('analysis')){
 const parameters = [
     request.body.id,
     request.body.ticker,
@@ -30,8 +30,8 @@ const parameters = [
     request.body.dislikes,
     request.body.price_target,
     request.body.analysis
-]
-const query = 'INSERT INTO tickers(id, ticker, likes, dislikes, price_target, analysis) VALUES (?, ?, ?, ?, ?, ?)'
+];
+const query = 'INSERT INTO tickers(id, ticker, likes, dislikes, price_target, analysis) VALUES (?, ?, ?, ?, ?, ?)';
 connection.query(query, parameters, (error, result) => {
 if(error){
     response.status(500);
@@ -66,6 +66,7 @@ service.get('/:ticker', (request, response) => {
                 results: rows.map(rowToMemory),
             })
         }      
+});
 });
 
 service.get('/:ticker/:id', (request, response) => {
