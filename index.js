@@ -1,5 +1,5 @@
 const express = require('express');
-
+const mysql = require('mysql');
 const service = express();
 service.use(express.json());
 const fs = require('fs');
@@ -20,9 +20,9 @@ connection.connect(error => {
 // TODO: issue queries.
 
 service.post('/:ticker/:id', (request, response) => {
-if (request.body.hasOwnPropert('id') && request.body.hasOwnPropert('ticker') &&
-request.body.hasOwnPropert('likes') && request.body.hasOwnPropert('dislikes') &&
-request.body.hasOwnPropert('price_target') && request.body.hasOwnPropert('analysis')){
+if (request.body.hasOwnProperty('id') && request.body.hasOwnProperty('ticker') &&
+request.body.hasOwnProperty('likes') && request.body.hasOwnProperty('dislikes') &&
+request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('analysis')){
 const parameters = [
     request.body.id,
     request.body.ticker,
@@ -31,7 +31,7 @@ const parameters = [
     request.body.price_target,
     request.body.analysis
 ];
-const query = 'INSERT INTO tickers(id, ticker, likes, dislikes, price_target, analysis) VALUES (?, ?, ?, ?, ?, ?)';
+const query = 'INSERT INTO ticker(id, ticker, likes, dislikes, price_target, analysis) VALUES (?, ?, ?, ?, ?, ?)';
 connection.query(query, parameters, (error, result) => {
 if(error){
     response.status(500);
@@ -51,8 +51,8 @@ if(error){
 
 service.get('/:ticker', (request, response) => {
     var ticker = request.params.ticker;
-    const query = 'SELECT * FROM tickers WHERE ticker = ?'
-    connection.query(query, parameters, (error, rows) => {
+    const query = 'SELECT * FROM ticker WHERE ticker = ?'
+    connection.query(query, ticker, (error, rows) => {
         if (error){
             response.status(500);
             response.json({
@@ -60,7 +60,7 @@ service.get('/:ticker', (request, response) => {
                 results: error.message,
             });
         }else{
-            const tickers = row.map(rowToMemory);
+            const tickers = rows.map(rowToMemory);
             response.json({
                 ok: true,
                 results: rows.map(rowToMemory),
@@ -70,23 +70,26 @@ service.get('/:ticker', (request, response) => {
 });
 
 service.get('/:ticker/:id', (request, response) => {
-    var ticker = request.params.ticker;
-    var id = parseInt(request.params.id);
-        if (tickers.hasOwnProperty(ticker)){
-    response.json({
-    ok: true,
-    result: {
-     ticker: ticker,
-     analyses: tickers[ticker].analyses[id],
-    }
-    });
-}else{
-    response.status(404);
-    response.json({
-      ok: false,
-      results: `No such ticker: ${ticker}`,
-    });
-}
+    const parameters =[
+	    parseInt(request.params.id),
+	    request.params.ticker,
+];
+    const query = 'SELECT * FROM ticker WHERE id = ? AND ticker = ?'
+    connection.query(query, parameters, (error, rows) => {
+        if (error){
+            response.status(500);
+            response.json({
+                ok: false,
+                results: error.message,
+            });
+        }else{
+            const tickers = rows.map(rowToMemory);
+            response.json({
+                ok: true,
+                results: rows.map(rowToMemory),
+            })
+        }      
+});
 });
 
 service.patch('/:ticker/:id/like', (request, response) => {
@@ -172,6 +175,16 @@ service.delete('/:ticker', (request, response) => {
         });
 }
 });
+function rowToMemory(row){
+	return{
+		id: row.id,
+		ticker: row.ticker,
+		likes: row.likes,
+		dislikes: row.dislikes,
+		price_target: row.price_target,
+		analysis: row.analysis
+	};
+}
 
 const port = 5000;
 service.listen(port, () => {

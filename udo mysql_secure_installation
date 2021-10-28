@@ -1,0 +1,12 @@
+[0;1;32m●[0m mysql.service - MySQL Community Server
+     Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Tue 2021-10-26 20:24:37 UTC; 1 day 16h ago
+   Main PID: 259141 (mysqld)
+     Status: "Server is operational"
+      Tasks: 39 (limit: 1136)
+     Memory: 357.1M
+     CGroup: /system.slice/mysql.service
+             └─259141 /usr/sbin/mysqld
+
+Oct 26 20:24:36 CS347-Kory systemd[1]: Starting MySQL Community Server...
+Oct 26 20:24:37 CS347-Kory systemd[1]: Started MySQL Community Server.
