@@ -4,52 +4,38 @@ const service = express();
 
 var tickers = {
 };
+service.use(express.json());
+
 
 service.post('/:ticker/:id', (request, response) => {
 var ticker = request.params.ticker.toLowerCase();
 var id = parseInt(request.params.id.toLowerCase());
+var holder_ticker = {ticker: ticker, id: id, likes:0, dislikes:0};
+Object.assign(holder_ticker, request.body);
 if (tickers.hasOwnProperty(ticker)){
-var new_analysis = {
-    ticker: ticker,
-    id: words[word].definitions.length,
-    likes: 0,
-    dislikes: 0,
-    price_target: 0,
-    buy_signals: ,
-    sell_signals: ,
-    analysis: ,
-}
-tickers[ticker].analyses.push(new_analysis);
+    tickers[ticker].analyses.push(holder_ticker);
 } else{
-    var new_analysis = {
+    var new_ticker = {
         ticker: ticker,
         analyses: [
             {
-                id: 0,
-                likes: 0,
-                dislikes: 0,
-                price_target: 0,
-                buy_signals: 0,
-                sell_signals: 0,
-                analysis: ,
+
             }
         ]
     }
-    tickers[ticker] = new_analysis;
+    tickers[ticker] = new_ticker;
+    tickers[ticker].analyses.push(holder_ticker);
 }
 
 response.json({
     ok:true,
     result: {
         ticker: ticker,
-        id: words[word].definitions.length-1,
+        id: id,
         likes: 0,
-        dislikes 0,
+        dislikes: 0,
         price_target: 0,
-        buy_signals: 0,
-        sell_signals: 0,
-        analysis: ,
-        
+        //analysis: tickers[ticker].analyses[id].analysis,
     },
 });
 });
@@ -62,7 +48,7 @@ service.get('/:ticker', (request, response) => {
     ok: true,
     result: {
      ticker: ticker,
-     definitions: tickers[ticker].analyses,
+     analyses: tickers[ticker].analyses,
     }
     });
 }else{
@@ -72,12 +58,32 @@ service.get('/:ticker', (request, response) => {
       results: `No such ticker: ${ticker}`,
     });
 }
+});
+
+service.get('/:ticker/:id', (request, response) => {
+    var ticker = request.params.ticker;
+    var id = parseInt(request.params.id);
+        if (tickers.hasOwnProperty(ticker)){
+    response.json({
+    ok: true,
+    result: {
+     ticker: ticker,
+     analyses: tickers[ticker].analyses[id],
+    }
+    });
+}else{
+    response.status(404);
+    response.json({
+      ok: false,
+      results: `No such ticker: ${ticker}`,
+    });
 }
 });
 
 service.patch('/:ticker/:id/like', (request, response) => {
-    var ticker = request.ticker.word;
+    var ticker = request.params.ticker;
     var id = parseInt(request.params.id);
+    
     if (tickers.hasOwnProperty(ticker)){
     tickers[ticker].analyses[id].likes += 1;
     response.json({
@@ -99,13 +105,15 @@ service.patch('/:ticker/:id/like', (request, response) => {
 service.patch('/:ticker/:id', (request,response) => {
     var ticker = request.params.ticker;
     var id = parseInt(request.params.id);
-    //var new_analysis = 
-    if (tickers.hasOwnProperty(tickers)){
-    //tickers[ticker].analyses[id].analysis = new_analysis;
+    var holder_ticker = {};
+    console.log(request.body);
+    Object.assign(holder_ticker, request.body);
+    if (tickers.hasOwnProperty(ticker)){
+    tickers[ticker].analyses[id] = holder_ticker;
     response.json({
         ok: true,
         result: {
-            analysis: tickers[ticker].analyses[id].analysis,
+            analysis: tickers[ticker].analyses,
         }
 })}else{
     response.status(404);
