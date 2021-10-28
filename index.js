@@ -118,7 +118,7 @@ request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('anal
     
     const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, analysis = ?, WHERE id = ? AND ticker = ?';
     
-    connection.query(query, parameters, (error, rows) => {
+    connection.query(query, parameters, (error, result) => {
         if (error){
             response.status(500);
             response.json({
@@ -126,10 +126,8 @@ request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('anal
                 results: error.message,
             });
         }else{
-            const tickers = rows.map(rowToMemory);
             response.json({
                 ok: true,
-                results: rows.map(rowToMemory),
             });
         }
     });  
@@ -156,9 +154,9 @@ request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('anal
         request.body.ticker,
     ];
     
-    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, analysis = ?, WHERE id = ? AND ticker = ?';
+    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, analysis = ? WHERE id = ? AND ticker = ?';
     
-    connection.query(query, parameters, (error, rows) => {
+    connection.query(query, parameters, (error, result) => {
         if (error){
             response.status(500);
             response.json({
@@ -166,10 +164,8 @@ request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('anal
                 results: error.message,
             });
         }else{
-            const tickers = rows.map(rowToMemory);
             response.json({
                 ok: true,
-                results: rows.map(rowToMemory),
             });
         }
     });  
@@ -196,9 +192,9 @@ request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('anal
         request.body.ticker,
     ];
     
-    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, analysis = ?, WHERE id = ? AND ticker = ?';
+    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, analysis = ? WHERE id = ? AND ticker = ?';
     
-    connection.query(query, parameters, (error, rows) => {
+    connection.query(query, parameters, (error, result) => {
         if (error){
             response.status(500);
             response.json({
@@ -206,10 +202,8 @@ request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('anal
                 results: error.message,
             });
         }else{
-            const tickers = rows.map(rowToMemory);
             response.json({
                 ok: true,
-                results: rows.map(rowToMemory),
             });
         }
     });  
