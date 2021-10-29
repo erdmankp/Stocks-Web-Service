@@ -6,12 +6,19 @@ service.use((request, response, next) => {
   response.set('Access-Control-Allow-Origin', '*');
   next();
 });
+
+service.options('*', (request, response) => {
+response.set('Access-Control-Allow-Headers', 'Content-Type');
+response.set('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+response.sendStatus(200);
+});
+
 const fs = require('fs');
 
 const json = fs.readFileSync('credentials.json', 'utf8');
 const credentials = JSON.parse(json);
 const connection = mysql.createConnection(credentials);
-connection.connect(error => {
+onnection.connect(error => {
   if (error) {
     console.error(error);
     process.exit(1);
@@ -62,8 +69,12 @@ if(error){
   }
 });
 
-service.get("/report.html", (request, response) => {
+service.get('/report.html', (request, response) => {
 response.sendFile("report.html");
+reponse.json){
+	ok: false,
+	results: "test",
+});
 });
 
 
@@ -86,6 +97,7 @@ service.get('/:ticker', (request, response) => {
             response.json({
                 ok: true,
                 results: rows.map(rowToMemory),
+	        test: "ok",
             });
         }
     });  
