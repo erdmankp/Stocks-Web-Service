@@ -62,7 +62,7 @@ if(error){
   }
 });
 
-service.get("report.html", (request, response) => {
+service.get("/report.html", (request, response) => {
 response.sendFile("report.html");
 });
 
