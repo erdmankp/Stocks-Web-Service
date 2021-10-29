@@ -68,7 +68,8 @@ response.sendFile("report.html");
 
 
 service.get('/:ticker', (request, response) => {
-    const parameters = [
+
+	const parameters = [
         request.params.ticker,
         parseInt(request.params.id),
     ];
