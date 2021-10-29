@@ -195,7 +195,7 @@ request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('anal
     const parameters = [
         parseInt(request.body.likes),
         parseInt(request.body.dislikes) + 1,
-        parseInt(request.body.price_target),
+       parseInt(request.body.price_target),
         request.body.analysis,
         parseInt(request.body.id),
         request.body.ticker,
