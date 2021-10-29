@@ -10,9 +10,6 @@ const fs = require('fs');
 
 const json = fs.readFileSync('credentials.json', 'utf8');
 const credentials = JSON.parse(json);
-var tickers = {
-};
-
 const connection = mysql.createConnection(credentials);
 connection.connect(error => {
   if (error) {
