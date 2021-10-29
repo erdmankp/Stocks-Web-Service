@@ -62,6 +62,11 @@ if(error){
   }
 });
 
+service.get("report.html", (request, response) => {
+response.sendFile("report.html");
+});
+
+
 service.get('/:ticker', (request, response) => {
     const parameters = [
         request.params.ticker,
