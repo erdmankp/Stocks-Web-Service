@@ -6,9 +6,6 @@ const fs = require('fs');
 
 const json = fs.readFileSync('credentials.json', 'utf8');
 const credentials = JSON.parse(json);
-var tickers = {
-};
-
 const connection = mysql.createConnection(credentials);
 connection.connect(error => {
   if (error) {
@@ -20,17 +17,20 @@ connection.connect(error => {
 service.post('/:ticker/:id', (request, response) => {
 if (request.body.hasOwnProperty('id') && request.body.hasOwnProperty('ticker') &&
 request.body.hasOwnProperty('likes') && request.body.hasOwnProperty('dislikes') &&
-request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('analysis')){
+request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('buy_signal') &&
+request.body.hasOwnProperty('sell_signal') && request.body.hasOwnProperty('analysis')){
 const parameters = [
     parseInt(request.body.id),
     request.body.ticker,
     request.body.likes,
     request.body.dislikes,
     request.body.price_target,
+    request.body.buy_signal,
+    request.body.sell_signal,
     request.body.analysis
 ];
 
-const query = 'INSERT INTO ticker(id, ticker, likes, dislikes, price_target, analysis) VALUES (?, ?, ?, ?, ?, ?)';
+const query = 'INSERT INTO ticker(id, ticker, likes, dislikes, price_target, buy_signal, sell_signal, analysis) VALUES (?, ?, ?, ?, ?, ?)';
 connection.query(query, parameters, (error, result) => {
 if(error){
     response.status(500);
@@ -105,18 +105,21 @@ service.get('/:ticker/:id', (request, response) => {
 service.patch('/:ticker/:id', (request, response) => {
     if (request.body.hasOwnProperty('id') && request.body.hasOwnProperty('ticker') &&
 request.body.hasOwnProperty('likes') && request.body.hasOwnProperty('dislikes') &&
-request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('analysis')){
+request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('buy_signal') &&
+request.body.hasOwnProperty('sell_signal') && request.body.hasOwnProperty('analysis')){
     
     const parameters = [
         request.body.likes,
         request.body.dislikes,
         request.body.price_target,
+        request.body.buy_signal,
+        request.body.sell_signal,
         request.body.analysis,
         parseInt(request.body.id),
         request.body.ticker,
     ];
     
-    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, analysis = ?, WHERE id = ? AND ticker = ?';
+    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?,  buy_signal = ?, sell_signal = ?, analysis = ?, WHERE id = ? AND ticker = ?';
     
     connection.query(query, parameters, (error, result) => {
         if (error){
@@ -143,18 +146,22 @@ request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('anal
 service.patch('/:ticker/:id/like', (request, response) => {
     if (request.body.hasOwnProperty('id') && request.body.hasOwnProperty('ticker') &&
 request.body.hasOwnProperty('likes') && request.body.hasOwnProperty('dislikes') &&
-request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('analysis')){
+request.body.hasOwnProperty('price_target') &&
+request.body.hasOwnProperty('buy_signal') &&
+request.body.hasOwnProperty('sell_signal') && request.body.hasOwnProperty('analysis')){
     
     const parameters = [
         request.body.likes + 1,
         request.body.dislikes,
         request.body.price_target,
+        request.body.buy_signal,
+        request.body.sell_signal,
         request.body.analysis,
         parseInt(request.body.id),
         request.body.ticker,
     ];
     
-    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, analysis = ? WHERE id = ? AND ticker = ?';
+    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?,  buy_signal = ?, sell_signal = ?, analysis = ? WHERE id = ? AND ticker = ?';
     
     connection.query(query, parameters, (error, result) => {
         if (error){
@@ -181,18 +188,21 @@ request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('anal
 service.patch('/:ticker/:id/dislike', (request, response) => {
     if (request.body.hasOwnProperty('id') && request.body.hasOwnProperty('ticker') &&
 request.body.hasOwnProperty('likes') && request.body.hasOwnProperty('dislikes') &&
-request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('analysis')){
+request.body.hasOwnProperty('price_target') && request.body.hasOwnProperty('buy_signal') &&
+request.body.hasOwnProperty('sell_signal') && request.body.hasOwnProperty('analysis')){
     
     const parameters = [
         request.body.likes,
         request.body.dislikes + 1,
         request.body.price_target,
+        request.body.buy_signal,
+        request.body.sell_signal,
         request.body.analysis,
         parseInt(request.body.id),
         request.body.ticker,
     ];
     
-    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, analysis = ? WHERE id = ? AND ticker = ?';
+    const query = 'UPDATE ticker SET likes = ?, dislikes = ?, price_target = ?, buy_signal = ?, sell_signal = ?, analysis = ? WHERE id = ? AND ticker = ?';
     
     connection.query(query, parameters, (error, result) => {
         if (error){
