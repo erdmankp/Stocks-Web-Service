@@ -14,15 +14,46 @@
             <li>Create, read, update, and delete are supported. </li>
             <li> I blocked all ports except 22, 80, 443, and 8443.</li>
             <li>Nginx server was created.</li>
-            <li>*** The web service must support cross-origin resource sharing using custom middleware and an options wildcard endpoint.</li>
+            <li>I have the cross-origin sharing using custom middleware and an options wildcard endpoint and an options wildcard endpoint at the beginning of index.js.</li>
             <li>I installed and started pm2 to run index.js.</li>
             <li>I stored on GitHub and shared with hcientist.</li>
             <li>I included the creation and schema scripts with the password removed.</li>
             <li> Didn't do too good on this one because I finished almost everything in a single day since it mirrored the lab, but at least all my commits weren't on a single day.</li>
-            <li>***Have your service respond to https://project2.YOUR-DOMAIN-NAME:8443/report.html by sending back an HTML page with brief report containing an itemized breakdown of how you believe you have met the expectations listed above.
-                please include very explcitly the URLs and requests you are expecting:
-                document the endpoints that your service provides.
-                Describe each endpoint’s purpose, HTTP method, path, parameters, any expected body content, and response.</li>
+	    <li>This is the report page. Here are some curl commands:<br>
+	    curl --header 'Content-Type: application/json' \
+  --data '{"id": 1, "ticker": "test", "likes": 3, "dislikes": 1, "price_target":100, "analysis": "none yet"}' \
+  https://project2.erdmannk.xyz:8443/test/1
+  <br><br>
+curl --header 'Content-Type: application/json' \
+  --data '{"id": 2, "ticker": "test", "likes": 3, "dislikes": 1, "price_target":100, "analysis": "none yet"}' \
+  https://project2.erdmannk.xyz:8443/test/2
+  <br><br>
+curl --header 'Content-Type: application/json' \
+  --request PATCH \
+  --data '{"id": 1, "ticker": "test", "likes": 99, "dislikes": 99, "price_target":99, "analysis": "updated"}' \
+  https://project2.erdmannk.xyz:8443/test/1
+  <br><br>
+curl --header 'Content-Type: application/json' \
+  --request PATCH \
+  --data '{"id": 1, "ticker": "test", "likes": 99, "dislikes": 99, "price_target":99, "analysis": "updated"}' \
+  https://project2.erdmannk.xyz:8443/test/1/like
+  <br><br>
+curl --header 'Content-Type: application/json' \
+  --request PATCH \
+  --data '{"id": 1, "ticker": "test", "likes": 99, "dislikes": 99, "price_target":99, "analysis": "updated"}' \
+  https://project2.erdmannk.xyz:8443/test/1/dislike
+  <br><br>
+curl --request DELETE \
+  https://project2.erdmannk.xyz:8443/test/1
+  <br><br>
+curl --request DELETE \
+  https://project2.erdmannk.xyz:8443/test
+  <br><br>
+curl https://project2.erdmannk.xyz:8443/test/1
+<br><br>
+curl https://project2.erdmannk.xyz:8443/test/2
+<br><br>
+curl https://project2.erdmannk.xyz:8443/test</li>
           </ol>  
     </body>
 </html>
