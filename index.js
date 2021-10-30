@@ -34,7 +34,7 @@ service.options('*', (request, response) => {
 
 
 service.get('/report.html', (request, response) => {
-response.sendFile("report.html", {root: __dirname}));
+response.sendFile("report.html", {root: __dirname});
 });
 
 
