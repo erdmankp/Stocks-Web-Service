@@ -18,7 +18,7 @@ const fs = require('fs');
 const json = fs.readFileSync('credentials.json', 'utf8');
 const credentials = JSON.parse(json);
 const connection = mysql.createConnection(credentials);
-onnection.connect(error => {
+connection.connect(error => {
   if (error) {
     console.error(error);
     process.exit(1);
