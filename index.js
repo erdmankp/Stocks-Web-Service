@@ -25,11 +25,11 @@ onnection.connect(error => {
   }
 });
 
-service.options('*', (request, response) => {
+/** service.options('*', (request, response) => {
   response.set('Access-Control-Allow-Headers', 'Content-Type');
   response.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
   response.sendStatus(200);
-});
+});**/
 
 
 
