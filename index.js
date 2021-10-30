@@ -96,7 +96,6 @@ service.get('/:ticker', (request, response) => {
             response.json({
                 ok: true,
                 results: rows.map(rowToMemory),
-	        test: "ok",
             });
         }
     });  
