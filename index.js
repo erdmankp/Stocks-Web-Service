@@ -25,16 +25,16 @@ onnection.connect(error => {
   }
 });
 
-/** service.options('*', (request, response) => {
+service.options('*', (request, response) => {
   response.set('Access-Control-Allow-Headers', 'Content-Type');
   response.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
   response.sendStatus(200);
-});**/
+});
 
 
 
 service.get('/report.html', (request, response) => {
-response.sendFile("report.html");
+response.sendFile("report.html", {root: __dirname}));
 });
 
 
