@@ -31,6 +31,13 @@ service.options('*', (request, response) => {
   response.sendStatus(200);
 });
 
+
+
+service.get('/report.html', (request, response) => {
+response.sendFile("report.html");
+});
+
+
 service.post('/:ticker/:id', (request, response) => {
 if (request.body.hasOwnProperty('id') && request.body.hasOwnProperty('ticker') &&
 request.body.hasOwnProperty('likes') && request.body.hasOwnProperty('dislikes') &&
@@ -67,14 +74,6 @@ if(error){
       results: 'Incomplete memory.',
     });
   }
-});
-
-service.get('/report.html', (request, response) => {
-response.sendFile("report.html");
-reponse.json){
-	ok: false,
-	results: "test",
-});
 });
 
 
