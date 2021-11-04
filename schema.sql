@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS ticker;
+DROP TABLE IF EXISTS symbol;
 
-CREATE TABLE ticker (
+CREATE TABLE symbol (
 id SERIAL PRIMARY KEY,
-ticker TEXT,
+symbol TEXT,
 likes INT,
 dislikes INT,
 price_target INT,
