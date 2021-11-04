@@ -21,26 +21,26 @@
             <li> Didn't do too good on this one because I finished almost everything in a single day since it mirrored the lab, but at least all my commits weren't on a single day.</li>
 	    <li>This is the report page. Here are some curl commands:<br>
 	    curl --header 'Content-Type: application/json' \
-  --data '{"id": 1, "ticker": "test", "likes": 3, "dislikes": 1, "price_target":100, "analysis": "none yet"}' \
+  --data '{"id": 1, "symbol": "test", "likes": 3, "dislikes": 1, "price_target":100, "analysis": "none yet"}' \
   https://project2.erdmannk.xyz:8443/test/1
   <br><br>
 curl --header 'Content-Type: application/json' \
-  --data '{"id": 2, "ticker": "test", "likes": 3, "dislikes": 1, "price_target":100, "analysis": "none yet"}' \
+  --data '{"id": 2, "symbol": "test", "likes": 3, "dislikes": 1, "price_target":100, "analysis": "none yet"}' \
   https://project2.erdmannk.xyz:8443/test/2
   <br><br>
 curl --header 'Content-Type: application/json' \
   --request PATCH \
-  --data '{"id": 1, "ticker": "test", "likes": 99, "dislikes": 99, "price_target":99, "analysis": "updated"}' \
+  --data '{"id": 1, "symbol": "test", "likes": 99, "dislikes": 99, "price_target":99, "analysis": "updated"}' \
   https://project2.erdmannk.xyz:8443/test/1
   <br><br>
 curl --header 'Content-Type: application/json' \
   --request PATCH \
-  --data '{"id": 1, "ticker": "test", "likes": 99, "dislikes": 99, "price_target":99, "analysis": "updated"}' \
+  --data '{"id": 1, "symbol": "test", "likes": 99, "dislikes": 99, "price_target":99, "analysis": "updated"}' \
   https://project2.erdmannk.xyz:8443/test/1/like
   <br><br>
 curl --header 'Content-Type: application/json' \
   --request PATCH \
-  --data '{"id": 1, "ticker": "test", "likes": 99, "dislikes": 99, "price_target":99, "analysis": "updated"}' \
+  --data '{"id": 1, "symbol": "test", "likes": 99, "dislikes": 99, "price_target":99, "analysis": "updated"}' \
   https://project2.erdmannk.xyz:8443/test/1/dislike
   <br><br>
 curl --request DELETE \
